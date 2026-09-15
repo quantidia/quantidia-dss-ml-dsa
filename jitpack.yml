@@ -1,0 +1,7 @@
+jdk:
+  - openjdk17
+before_install:
+  - sdk install maven 3.9.6
+  - sdk default maven 3.9.6
+install:
+  - mvn clean install -Dmaven.test.skip=true -Denforcer.skip=true
