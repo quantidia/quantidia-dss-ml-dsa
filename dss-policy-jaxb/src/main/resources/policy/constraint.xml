@@ -570,6 +570,8 @@
 			<Algo>DSA</Algo>
 			<Algo>ECDSA</Algo>
 			<Algo>PLAIN-ECDSA</Algo>
+			<Algo>ML-DSA</Algo>
+			<Algo>MLDSA65-ECDSA-P256-SHA512</Algo>
 <!-- 		<Algo>EdDSA</Algo> 				Not referenced in ETSI/SOGIS -->
 		</AcceptableEncryptionAlgo>
 		<MiniPublicKeySize>

@@ -54,7 +54,13 @@ public enum EncryptionAlgorithm implements OidBasedEnum {
 	EDDSA("EdDSA", "", "EdDSA"),
 
 	/** HMAC */
-	HMAC("HMAC", "", "");
+	HMAC("HMAC", "", ""),
+
+	/** ML-DSA (pure) — NIST FIPS 204, id-ml-dsa-65 */
+	ML_DSA("ML-DSA", "2.16.840.1.101.3.4.3.18", "ML-DSA-65"),
+
+	/** Composite ML-DSA-65 + ECDSA-P256 — IANA draft, pure variant */
+	MLDSA65_ECDSA_P256("MLDSA65-ECDSA-P256-SHA512", "1.3.6.1.5.5.7.6.45", "MLDSA65-ECDSA-P256-SHA512");
 
 	/** The name of the algorithm */
 	private String name;
@@ -127,6 +133,15 @@ public enum EncryptionAlgorithm implements OidBasedEnum {
 		// Since JDK 15
 		if ("Ed25519".equals(name) || "Ed448".equals(name)) {
 			return EDDSA;
+		}
+
+		// ML-DSA variants (BC registers both with and without hyphen)
+		if ("ML-DSA-65".equals(name) || "MLDSA65".equals(name) || "ML-DSA".equals(name)) {
+			return ML_DSA;
+		}
+		// Composite
+		if ("MLDSA65-ECDSA-P256-SHA512".equals(name)) {
+			return MLDSA65_ECDSA_P256;
 		}
 
 		for (EncryptionAlgorithm encryptionAlgo : values()) {
@@ -218,6 +233,9 @@ public enum EncryptionAlgorithm implements OidBasedEnum {
 		if (this.isEdDSAFamily() && encryptionAlgorithm.isEdDSAFamily()) {
 			return true;
 		}
+		if (this.isMLDSAFamily() && encryptionAlgorithm.isMLDSAFamily()) {
+			return true;
+		}
 		return false;
 	}
 
@@ -231,6 +249,10 @@ public enum EncryptionAlgorithm implements OidBasedEnum {
 
 	private boolean isEdDSAFamily() {
 		return X25519 == this || X448 == this || EDDSA == this;
+	}
+
+	private boolean isMLDSAFamily() {
+		return ML_DSA == this || MLDSA65_ECDSA_P256 == this;
 	}
 
 }

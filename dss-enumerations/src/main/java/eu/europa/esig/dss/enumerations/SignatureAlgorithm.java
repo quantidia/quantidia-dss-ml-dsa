@@ -364,7 +364,13 @@ public enum SignatureAlgorithm implements OidAndUriBasedEnum {
     /**
      * EDDSA with SHAKE256-512
      */
-    ED448(EncryptionAlgorithm.EDDSA, DigestAlgorithm.SHAKE256_512);
+    ED448(EncryptionAlgorithm.EDDSA, DigestAlgorithm.SHAKE256_512),
+
+    /** ML-DSA-65 pure — NIST FIPS 204 */
+    ML_DSA_65(EncryptionAlgorithm.ML_DSA, DigestAlgorithm.SHA512),
+
+    /** Composite ML-DSA-65 + ECDSA-P256-SHA512 — IANA draft */
+    MLDSA65_ECDSA_P256_SHA512(EncryptionAlgorithm.MLDSA65_ECDSA_P256, DigestAlgorithm.SHA512);
 
     /**
      * The encryption algorithm
@@ -561,6 +567,12 @@ public enum SignatureAlgorithm implements OidAndUriBasedEnum {
 
         oidAlgorithms.put("1.2.840.113549.1.1.10", RSA_SSA_PSS_SHA1_MGF1);
 
+        // ML-DSA-65 pure (NIST id-ml-dsa-65)
+        oidAlgorithms.put("2.16.840.1.101.3.4.3.18", ML_DSA_65);
+
+        // Composite MLDSA65-ECDSA-P256-SHA512 (IANA id_MLDSA65_ECDSA_P256_SHA512)
+        oidAlgorithms.put("1.3.6.1.5.5.7.6.45", MLDSA65_ECDSA_P256_SHA512);
+
         return oidAlgorithms;
     }
 
@@ -671,6 +683,14 @@ public enum SignatureAlgorithm implements OidAndUriBasedEnum {
         javaAlgorithms.put("SHA3-512withHMAC", HMAC_SHA3_512);
 
         javaAlgorithms.put("RIPEMD160withHMAC", HMAC_RIPEMD160);
+
+        // ML-DSA-65 — BC canonical name and alias
+        javaAlgorithms.put("ML-DSA-65", ML_DSA_65);
+        javaAlgorithms.put("MLDSA65",   ML_DSA_65);
+
+        // Composite
+        javaAlgorithms.put("MLDSA65-ECDSA-P256-SHA512", MLDSA65_ECDSA_P256_SHA512);
+
         return javaAlgorithms;
     }
 
